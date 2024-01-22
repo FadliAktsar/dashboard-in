@@ -3,6 +3,7 @@ from app.login import bp
 
 @bp.route('/login', methods=['GET, POST'])
 def login():
+    '''
     if request.methods == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -17,6 +18,11 @@ def login():
                 existing_preferences = db.session.execute(
                     db.select(Preference).filter(Preference.user_id=current_user.id)).scalars().all()
                 if existing_preferences:
-                    return redirect(url_for('main.'))
-
-    return render_template('login.html')
+                    return redirect(url_for('main.index'))
+                retrun redirect(url_for('preference.choose_preference'))
+            else:
+                flash('Password salah, coba lagi!', category='error')
+        else:
+            flash('Username tidak terdaftar!', category='error')
+    '''
+    return render_template('auth/login.html')

@@ -1,12 +1,15 @@
-from flask import Flask, render_template, Blueprint
+from flask import Flask, Blueprint
 from flask_bootstrap import Bootstrap
+
 from config import Config
+from app.extension import db
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
     #Initialize Flask Extension
+    db.init_app(app)
 
     #Register blueprints
     from app.main import bp as main_bp
@@ -16,10 +19,10 @@ def create_app(config_class=Config):
     app.register_blueprint(login_bp)
 
     from app.penjualan import bp as penjualan_bp
-    app.register_blueprint(penjualan_bp)
+    app.register_blueprint(penjualan_bp, url_prefix='/penjualan')
     
     from app.peramalan import bp as peramalan_bp
-    app.register_blueprint(peramalan_bp)
+    app.register_blueprint(peramalan_bp, url_prefix='/peramalan')
 
         
     @app.route('/test/')
