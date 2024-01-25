@@ -22,13 +22,11 @@ def register():
                 email=email,
                 password=generate_password_hash(password, method='scrypt')
             )
-
-            # Menambahkan dan commit ke database menggunakan session
             db.session.add(new_user)
             db.session.commit()
 
             flash('Registrasi berhasil.', category='success')
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('login.login'))
         
         elif len(username) < 2:
             flash('Username harus lebih dari 1 karakter!', category='error')
