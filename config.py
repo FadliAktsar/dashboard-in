@@ -8,5 +8,5 @@ class Config:
         raise ValueError("No SECRET_KEY set for Flask application.")
     
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI')\
-        or 'postgresql://postgres:Duapuluhenam0299@localhost:5432/database_in'
+        or 'postgresql://postgres:Duapuluhenam0299@localhost:5432/database-in'
     SQLALCHEMY_TRACK_MODIFICATION = False
