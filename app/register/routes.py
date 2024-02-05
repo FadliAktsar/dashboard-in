@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, request, flash
 from werkzeug.security import generate_password_hash
-from app.model.database.user import user
+from app.model.user import user
 from app.register import bp
 from app.extension import db
 

@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, request, flash
 from werkzeug.security import check_password_hash
 from app.login import bp
-from app.model.database.user import user as user_model
+from app.model.user import user as user_model
 
 @bp.route('/', methods=['GET', 'POST'])
 def login():

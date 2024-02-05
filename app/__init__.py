@@ -1,5 +1,4 @@
 from flask import Flask, Blueprint
-from flask_bootstrap import Bootstrap
 
 from config import Config
 from app.extension import db
@@ -34,5 +33,4 @@ def create_app(config_class=Config):
     return app
 
     if __name__ == '__main__':
-        Bootstrap(app)
         app.run()
