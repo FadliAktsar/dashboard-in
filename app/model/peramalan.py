@@ -1,7 +1,7 @@
 from app.extension import db
 
-class peramalan(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date, nullable=False)
-    value = db.Column(db.Integer, nullable=False)
-    label = db.Column(db.String(125), nullable='false')
+class Peramalan(db.Model):
+    __tablename__ = 'peramalan'
+    Settelement_Date = db.Column(db.Date, nullable=False)
+    Forecast = db.Column(db.Integer, nullable=False)
+    Amount_Per_Day = db.Column(db.Integer, nullable=False)

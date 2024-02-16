@@ -1,10 +1,29 @@
 from flask import render_template, redirect, url_for, request, flash
-from werkzeug.security import generate_password_hash
-from app.model.user import user
-from app.register import bp
+from werkzeug.security import check_password_hash, generate_password_hash
+from app.model.user import User
 from app.extension import db
+from app.auth import bp
 
-@bp.route('/', methods=['GET', 'POST'])
+@bp.route('/login', methods=['GET', 'POST'])
+def login():
+   if request.method == 'POST':
+      username = request.form.get('username')
+      password = request.form.get('password')
+      #remember = True if request.form.get('remember') else False
+
+      user = User.query.filter_by(username=username).first()
+
+         # check if the user actually exists
+         # take the user-supplied password, hash it, and compare it to the hashed password in the database
+      if not user or not check_password_hash(user.password, password):
+            flash('Please check your login details and try again.')
+            return redirect(url_for('login.login')) # if the user doesn't exist or password is wrong, reload the page
+      
+      return redirect(url_for('main.index'))
+                      
+   return render_template('auth/login.html')
+
+@bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form.get('username')
@@ -13,11 +32,11 @@ def register():
         password_confirmation = request.form.get('password_confirmation')
 
         # Menggunakan objek User yang di-import dari model
-        existing_user = user.query.filter((user.username == username) | (user.email == email)).first()
+        existing_user = User.query.filter((User.username == username) | (User.email == email)).first()
 
         if existing_user is None:
             # Membuat objek User baru
-            new_user = user(
+            new_user = User(
                 username=username,
                 email=email,
                 password=generate_password_hash(password, method='scrypt')
