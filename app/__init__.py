@@ -1,7 +1,7 @@
-from flask import Flask, Blueprint
+from flask import Flask
 
 from config import Config
-from app.extension import db
+from app.extension import *
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -9,19 +9,12 @@ def create_app(config_class=Config):
 
     #Inisialisasi ekstensi flask
     db.init_app(app)
+    #login_manager.init_app(app)
 
-    #Mendaftarkan alamt blueprint
+    #Mendaftarkan alamat blueprint
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
-    '''
-    
-    from app.auth import bp as login_bp
-    app.register_blueprint(login_bp, url_prefix='/login')
-    
-    from app.register import bp as register_bp
-    app.register_blueprint(register_bp, url_prefix='/register')
-    
-    '''
+
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp)
 
@@ -39,3 +32,9 @@ def create_app(config_class=Config):
 
     if __name__ == '__main__':
         app.run()
+'''
+from app.model.user import User
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+'''
