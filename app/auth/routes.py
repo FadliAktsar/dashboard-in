@@ -1,5 +1,5 @@
 from flask import render_template, redirect, url_for, request, flash
-from flask_login import login_user, login_required, logout_user
+#from flask_login import login_user, login_required, logout_user
 
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.model.user import User
@@ -11,7 +11,7 @@ def login():
    if request.method == 'POST':
       username = request.form.get('username')
       password = request.form.get('password')
-      remember = True if request.form.get('remember') else False
+      #remember = True if request.form.get('remember') else False
 
       user = User.query.filter_by(username=username).first()
 
@@ -20,7 +20,7 @@ def login():
       if not user or not check_password_hash(user.password, password):
             flash('Penulisan Username atau Password Ada Yang Salah.')
             return redirect(url_for('auth.login'))
-      login_user(user, remember=remember)
+      #login_user(user, remember=remember)
       return redirect(url_for('main.index'))
                       
    return render_template('auth/login.html')
@@ -53,17 +53,20 @@ def register():
             flash('Username harus lebih dari 1 karakter!', category='error')
         elif len(email) < 4:
             flash('Email harus lebih dari 4 karakter!', category='error')
+            '''
         elif len(password) < 8:
             flash('Password harus lebih dari 8 karakter!', category='error')
+            '''
         elif password != password_confirmation:
             flash('Password tidak sesuai!', category='error')
         else:
             flash('Username atau Email sudah terdaftar', category='danger')
     
     return render_template('auth/register.html')
-
+'''
 @bp.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('auth.login'))
+    '''
