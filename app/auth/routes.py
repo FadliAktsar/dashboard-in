@@ -18,7 +18,7 @@ def login():
          # Mengecek apakah user telah terdaftar
          # take the user-supplied password, hash it, and compare it to the hashed password in the database
       if not user or not check_password_hash(user.password, password):
-            flash('Penulisan Username atau Password Ada Yang Salah.')
+            flash('User Tidak Terdaftar Atau Password Tidak Cocok.')
             return redirect(url_for('auth.login'))
       #login_user(user, remember=remember)
       return redirect(url_for('main.index'))

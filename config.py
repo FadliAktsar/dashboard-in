@@ -11,7 +11,7 @@ class Config:
     if not SQLALCHEMY_DATABASE_URI:
         raise ValueError("No SQLALCHEMY_DATABASE_URI set for Flask application.")
     
-    SQLALCHEMY_TRACK_MODIFICATION = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class ProductionConfig(Config):
     DEBUG = False
