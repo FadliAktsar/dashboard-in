@@ -8,19 +8,8 @@ from statsmodels.tsa.stattools import acf, pacf
 from statsmodels.tsa.seasonal import seasonal_decompose
 from pmdarima.arima import auto_arima
 
-from extension import app,db
+from sqlalchemy import create_engine
 
-with app.app_context():
-    # Mendapatkan koneksi ke database
-    conn = db.engine.connect()
+engine = create_engine('postgresql://postgres:Duapuluhenam0299@localhost:5432/database_in')
 
-    # Query SQL
-    sql = """
-        SELECT "Settlement_Date", "Amount", "Net_Amount" FROM public.transaksi;
-    """
-
-    # Membaca data dari database ke DataFrame pandas
-    df = pd.read_sql(sql, conn)
-
-    # Menampilkan lima baris pertama dari DataFrame
-    print(df.head())
+df = pd.read_sql('SELECT * FROM public.transaksi', engine)

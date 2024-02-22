@@ -30,8 +30,9 @@ def create_app(config_class=Config):
         return '<p>This is test page</p>'
     return app
 
-    if __name__ == '__main__':
-        app.run()
+if __name__ == '__main__':
+    app = create_app
+    app.run()
 '''
 from app.model.user import User
 @login_manager.user_loader
