@@ -13,3 +13,4 @@ from sqlalchemy import create_engine
 engine = create_engine('postgresql://postgres:Duapuluhenam0299@localhost:5432/database_in')
 
 df = pd.read_sql('SELECT * FROM public.transaksi', engine)
+relevant_columns = (df['Net_Amount'] !=0)

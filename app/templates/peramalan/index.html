@@ -2,6 +2,13 @@
 {% block title %} Peramalan {% endblock %}
 {%block content%}
     <div class="content">
-        <h2>Halaman peramalan.</h2>
+        <h2>Formulir Ramalan</h2>
+    <form method="post" action="{{ url_for('peramalan.index') }}">
+        <label for="input_data">Masukkan Data:</label>
+        <input type="text" id="input_data" name="input_data" required>
+        <button type="submit">Ramal</button>
+    </form>
+    <h2>Hasil Ramalan:</h2>
+    <p>{{ hasil_ramalan }}</p>
     </div>
 {%endblock%}
