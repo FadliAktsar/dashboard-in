@@ -1,4 +1,4 @@
-from flask import render_template, request
+from flask import render_template, request, flash
 #from flask_login import login_required, current_user
 import pickle
 
@@ -11,10 +11,13 @@ with open('app/arima_model.pkl', 'rb') as file:
 def index():
 
     if request.method == 'POST':
-        # Ambil data input dari formulir
-        input_data = request.form.get('input_data')
-        # Lakukan peramalan menggunakan model
-        hasil_ramalan = model.predict([input_data])
+        try:     
+            # Ambil data input dari formulir
+            input_data = request.form.get('input_data')
+            # Lakukan peramalan menggunakan model
+            hasil_ramalan = model.predict([input_data], '%Y-%m-%d')
+        except ValueError:
+            flash('Format salah data.')
         # Render template atau tampilkan hasil peramalan
         return render_template('hasil_ramalan.html', hasil_ramalan=hasil_ramalan)
  
