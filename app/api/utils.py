@@ -1,3 +1,4 @@
+'''
 import pickle
 import datetime
 from typing import List
@@ -15,7 +16,7 @@ class RevenuePredictor(ABC):
             except (OSError, FileNotFoundError, TypeError):
                 print("wrong path / model not available")
                 exit(-1)
-'''
+
 def calculate_next_date(self, prev_date):
     """
     Calculate next date
@@ -26,7 +27,7 @@ def calculate_next_date(self, prev_date):
     ) + datetime.timedelta(
         days=1
     ) 
-'''
+
 def calculate_next_date(self, prev_date):
         """
         Calculates next date
@@ -51,3 +52,4 @@ def predict(self, prev_date) -> List:
 @abstractmethod
 def preprocess_inputs(self, prev_date):
         pass
+'''
