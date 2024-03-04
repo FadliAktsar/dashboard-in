@@ -1,7 +1,7 @@
 from flask import render_template
 #from flask_login import login_required, current_user
 
-from app.penjualan import bp
+from app.upload import bp
 
 @bp.route('/')
 #@login_required

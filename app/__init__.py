@@ -18,11 +18,11 @@ def create_app(config_class=Config):
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp)
 
-    from app.penjualan import bp as penjualan_bp
-    app.register_blueprint(penjualan_bp, url_prefix='/penjualan')
+    from app.upload import bp as upload_bp
+    app.register_blueprint(upload_bp, url_prefix='/upload')
     
-    from app.peramalan import bp as peramalan_bp
-    app.register_blueprint(peramalan_bp, url_prefix='/peramalan')
+    from app.dashboard import bp as dashboard_bp
+    app.register_blueprint(dashboard_bp, url_prefix='/dashboard')
 
         
     @app.route('/test/')
