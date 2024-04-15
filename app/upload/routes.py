@@ -6,4 +6,4 @@ from app.upload import bp
 @bp.route('/')
 #@login_required
 def index():
-    return render_template('penjualan/index.html')
+    return render_template('upload/index.html')
