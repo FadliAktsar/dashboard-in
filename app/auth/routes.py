@@ -24,7 +24,7 @@ def login():
       return redirect(url_for('main.index'))
                       
    return render_template('auth/login.html')
-
+'''
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -53,16 +53,13 @@ def register():
             flash('Username harus lebih dari 1 karakter!', category='error')
         elif len(email) < 4:
             flash('Email harus lebih dari 4 karakter!', category='error')
-            '''
-        elif len(password) < 8:
-            flash('Password harus lebih dari 8 karakter!', category='error')
-            '''
         elif password != password_confirmation:
             flash('Password tidak sesuai!', category='error')
         else:
             flash('Username atau Email sudah terdaftar', category='danger')
     
     return render_template('auth/register.html')
+'''
 '''
 @bp.route('/logout')
 @login_required
