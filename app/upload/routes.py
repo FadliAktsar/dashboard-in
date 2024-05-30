@@ -8,19 +8,11 @@ from app.upload import bp
 #@login_required
 def index():
     
-    '''
-    Settlement_Date =
-    Amount =
-    Payment_Type =
-    '''
     #get transaction data from db
-    transaksi = db.session.execute(
+    db.session.execute(
             db.select(Transaksi).filter_by(Settlement_Date=Transaksi.Settlement_Date, Amount=Transaksi.Amount, Payment_Type=Transaksi.Payment_Type)
         )
     
-    for trans in transaksi:
-       pass
-
     if request.method == 'POST':
         pass
 
