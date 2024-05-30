@@ -1,5 +1,4 @@
 from flask import Flask
-
 from config import Config
 from app.extension import *
 
@@ -9,7 +8,6 @@ def create_app(config_class=Config):
 
     #Inisialisasi ekstensi flask
     db.init_app(app)
-    #login_manager.init_app(app)
 
     #Mendaftarkan alamat blueprint
     from app.main import bp as main_bp
