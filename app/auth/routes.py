@@ -24,6 +24,7 @@ def login():
       return redirect(url_for('main.index'))
                       
    return render_template('auth/login.html')
+
 '''
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -60,6 +61,7 @@ def register():
     
     return render_template('auth/register.html')
 '''
+
 '''
 @bp.route('/logout')
 @login_required
