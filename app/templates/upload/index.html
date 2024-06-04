@@ -1,12 +1,59 @@
 {%extends 'base.html'%}
-{% block title %} Penjualan {% endblock %}
+{% block title %} Upload {% endblock %}
 {%block content%}
-<form method = "POST" enctype="multipart/form-data" action = "/">    
-    <input type="file" name="file" accept=".csv">
-    <input type = "submit" value="Upload">  
-</form>
-<p style="color:blue;">Choose csv file to upload</p>
-<form action="/show_data" target="_blank">
-    <input type="submit" value="Show CSV"/>
-</form>
+
+<div class="content">
+  
+  <!-- Table section for show transaction data -->
+  <table class="table">
+    <tr>
+      <th>Tanggal</th>
+      <th>Transaksi</th>
+      <th>Tipe Pembayaran</th>
+    </tr>
+
+    {% for transaction in transaksi %}
+    <tr>
+      <td>{{ transaction.Settlement_Date }}</td>
+      <td>Rp.{{ transaction.Amount }}</td>
+      <td>{{ transaction.Payment_Type }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <!-- Navigation section for pagination controls -->
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+        {% if pagination.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{url_for('upload.index' , page=pagination.prev_num)}}">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Previous</span></li>
+        {% endif %}
+
+        {% for page_num in pagination.iter_pages() %}
+        {% if page_num %}
+        {% if page_num != pagination.page %}
+        <li class="page-item"><a class="page-link" href="{{url_for('upload.index' , page=page_num)}}">{{ page_num }}</a></li>
+        {% else %}
+        <li class="page-item active" aria-current="page">
+            <span class="page-link">{{ page_num }}</span>
+        </li>
+        {% endif %}
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">...</span></li>
+        {% endif %}
+        {% endfor %}
+
+        {% if pagination.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{url_for('upload.index' , page=pagination.next_num)}}">Next</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><span class="page-link">Next</span></li>
+        {% endif %}
+    </ul>
+</nav>
+</div>
 {%endblock%}
