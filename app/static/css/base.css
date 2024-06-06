@@ -36,6 +36,8 @@ body .wrapper{
     background-color: #fafbfe;
 }
 
+/* start of sidebar design */
+
 #sidebar {
     width: 70px;
     min-width: 70px;
@@ -116,3 +118,10 @@ a.sidebar-link{
     min-width: 15rem;
     display: none;
 }
+
+/* end of sidebar design */
+
+/* start of table design */
+
+
+/* end of table design */

@@ -4,5 +4,6 @@ from app.dashboard import bp
 
 @bp.route('/', methods=['GET', 'POST'])
 #@login_required
-def index(): 
+def index():
+     
     return render_template('dashboard/index.html')
