@@ -7,6 +7,7 @@ from app.upload import bp
 @bp.route('/')
 #@login_required
 def index():
+    
     try:
         #get transaction data from db and make it pagination
         page = request.args.get('page', 1, type=int)
@@ -15,7 +16,6 @@ def index():
                 per_page=10,
                   error_out=False)
         
-
     except Exception as e:
         error_text = "<p>The error:<br>" + str(e) + "</p>"
         hed = '<h1>Something is broken.</h1>'
