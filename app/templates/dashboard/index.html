@@ -4,8 +4,25 @@
 {% block content %}
 <div class="content">
     <h1>Dashboard Transaksi dan Peramalan</h1>
+
+    <select class="form-select" name="periods" aria-label="Default select example">
+        <option selected>Open this select menu</option>
+        <option value="30">30 Hari</option>
+        <option value="14">14 Hari</option>
+        <option value="7">7 Hari</option>
+      </select>
+
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-primary">
+          <input type="radio" name="options" id="option2" autocomplete="off"> Predict
+        </label>
+        <label class="btn btn-secondary">
+          <input type="radio" name="options" id="option3" autocomplete="off"> Download
+        </label>
+    </div>
+
     <div>
-        <canvas id="line-chart"></canvas>
+        <canvas id="line-chart" width="900" height="400"></canvas>
     </div>
 </div>
 {% endblock %}
