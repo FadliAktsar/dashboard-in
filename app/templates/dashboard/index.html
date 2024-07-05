@@ -2,33 +2,33 @@
 {% block title %} Dashboard {% endblock %}
 
 {% block content %}
-<div class="content">
-    <h1>Dashboard Transaksi dan Peramalan</h1>
 
-    <select class="form-select" name="periods" aria-label="Default select example">
-        <option selected>Open this select menu</option>
-        <option value="30">30 Hari</option>
-        <option value="14">14 Hari</option>
-        <option value="7">7 Hari</option>
-      </select>
+<div class="container">
 
-    <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-primary">
-          <input type="radio" name="options" id="option2" autocomplete="off"> Predict
-        </label>
-        <label class="btn btn-secondary">
-          <input type="radio" name="options" id="option3" autocomplete="off"> Download
-        </label>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <div class="selection-bar mb-3 d-flex">
+            <select id="forecast-period" class="form-select" name="periods" aria-label="Default select example">
+                <option value="#" selected>Pilih Periode Peramalan</option>
+                <option value="30">30 Hari</option>
+                <option value="14">14 Hari</option>
+                <option value="7">7 Hari</option>
+              </select>
+        </div>
+    
+        <div class="mb-3 d-flex">
+            <button id="download" class="btn btn-outline-secondary" type="button">Download</button>
+         </div>
+       </div>
+       
+    <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+        <canvas id="predict"></canvas>
     </div>
 
-    <div>
-        <canvas id="line-chart" width="900" height="400"></canvas>
-    </div>
 </div>
 {% endblock %}
 
 {% block app_scripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script type = "text/javascript"  src="{{ url_for('static', filename = 'js/canvas.js') }}"></script>
+<script type = "text/javascript"  src="{{ url_for('static', filename = 'js/dashboard.js') }}"></script>
 {% endblock %}
