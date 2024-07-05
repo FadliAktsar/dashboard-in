@@ -12,7 +12,7 @@ class Config:
         raise ValueError("No SQLALCHEMY_DATABASE_URI set for Flask application.")
     
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-
+'''
 class ProductionConfig(Config):
     DEBUG = False
 
@@ -26,3 +26,4 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
+'''
