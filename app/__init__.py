@@ -31,9 +31,3 @@ def create_app(config_class=Config):
 if __name__ == '__main__':
     app = create_app
     app.run()
-'''
-from app.model.user import User
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-'''
