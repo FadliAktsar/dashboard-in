@@ -18,10 +18,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         location.reload();
                     }, 2000); // Refresh halaman setelah 2 detik
-                } else {
-                    setTimeout(() => {
-                        location.reload();
-                    }, 2000);
                 }
             } else {
                 console.error('Notification element not found');
