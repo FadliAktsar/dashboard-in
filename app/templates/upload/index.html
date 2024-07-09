@@ -2,91 +2,45 @@
 {% block title %} Upload {% endblock %}
 {%block content%}
 
-<div class="container">
-
-  <!-- Notification -->
-  <div class="notification position-absolute top-0 start-50 translate-middle-x">
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-          {{ messages[0] }}
-      </div>
-      {% endif %}
-    {% endwith %}
-  </div>
-  
-  <div class="d-flex justify-content-between">
-    <!-- Search bar for show search specific data -->
-     <div class="d-grid gap-2 d-md-flex mb-3">
-          <form method="POST" action="#" class="d-flex">
-              <input type="search" placeholder="Search" aria-label="Search" name="searched" class="form-control me-2">
-          </form>
-        </div>
-  
-      <!-- Upload form for import data to database -->
-      <div class="d-grid gap-2 d-md-flex mb-3">
-       <form id="uploadForm" class="d-flex flex-row" method="POST" action="/upload/upload_files" enctype="multipart/form-data">
-         <input type="file" class="form-control me-2" id="customFile" name="file"/>
-         <button id="upload" class="btn btn-outline-secondary" type="submit">Upload</button>
-       </form>
-      </div>
-  </div>
-
-  <!-- Table section for show transaction data -->
-  <table class="table table-striped">
-    <tr>
-      <th>Tanggal</th>
-      <th>Transaksi</th>
-      <th>Tipe Pembayaran</th>
-    </tr>
-
-    {% for transaction in transaksi %}
-    <tr>
-      <td>{{ transaction.Settlement_Date }}</td>
-      <td>Rp.{{ transaction.Amount }}</td>
-      <td>{{ transaction.Payment_Type }}</td>
-    </tr>
-    {% endfor %}
-  </table>
-
-  <!-- Navigation section for pagination controls -->
-  <nav aria-label="Page navigation example">
-    <ul class="pagination">
-        {% if pagination.has_prev %}
-        <li class="page-item">
-            <a class="page-link" href="{{url_for('upload.index' , page=pagination.prev_num)}}">Previous</a>
-        </li>
-        {% else %}
-        <li class="page-item disabled"><span class="page-link">Previous</span></li>
-        {% endif %}
-
-        {% for page_num in pagination.iter_pages() %}
-        {% if page_num %}
-        {% if page_num != pagination.page %}
-        <li class="page-item"><a class="page-link" href="{{url_for('upload.index' , page=page_num)}}">{{ page_num }}</a></li>
-        {% else %}
-        <li class="page-item active" aria-current="page">
-            <span class="page-link">{{ page_num }}</span>
-        </li>
-        {% endif %}
-        {% else %}
-        <li class="page-item disabled"><span class="page-link">...</span></li>
-        {% endif %}
-        {% endfor %}
-
-        {% if pagination.has_next %}
-        <li class="page-item">
-            <a class="page-link" href="{{url_for('upload.index' , page=pagination.next_num)}}">Next</a>
-        </li>
-        {% else %}
-        <li class="page-item disabled"><span class="page-link">Next</span></li>
-        {% endif %}
-    </ul>
-</nav>
+<!-- Notification -->
+<div id="notification">
+  {% include 'notification.html' %}
 </div>
+
+<div class="d-flex justify-content-between">
+  
+  <!-- Search bar for show search specific data -->
+   <div class="d-grid gap-2 d-md-flex mb-3">
+        <form class="d-flex">
+            <input type="search" id="search-input" aria-label="Search" name="search"  value="{{ search_query }}" class="form-control me-2" placeholder="Search Transaction">
+        </form>
+      </div>
+
+    <!-- Upload form for import data to database -->
+    <div class="d-grid gap-2 d-md-flex mb-3">
+     <form id="uploadForm" class="d-flex flex-row" method="POST" action="/upload/upload_files" enctype="multipart/form-data">
+       <input type="file" class="form-control me-2" id="customFile" name="file"/>
+       <button id="upload" class="btn btn-outline-secondary" type="submit">Upload</button>
+     </form>
+    </div>
+</div>
+
+<!-- Table section for show transaction data -->
+ <div id="transaction-table">
+      {% include 'upload/_transaction_table.html' %}
+ </div>
+
+<!-- Navigation section for pagination controls -->
+ <div id="pagination">
+      {% include 'upload/_pagination.html' %}
+ </div>
+
 {%endblock%}
 
 {%block app_scripts%}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+  window.endpointUrl = "{{ url_for('upload.index') }}";
+</script>
 <script type = "text/javascript"  src="{{ url_for('static', filename = 'js/upload.js') }}"></script>
+<script type = "text/javascript"  src="{{ url_for('static', filename = 'js/upload_content.js') }}"></script>
 {%endblock%}
