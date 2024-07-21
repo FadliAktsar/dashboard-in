@@ -2,38 +2,29 @@
 {% block title %} Login {% endblock %}
 {% block content %}
 <div class="column is-4 is-offset-4">
+    
+    <div id="notification">
+        {% include 'notification.html' %}
+      </div>
+
     <h3 class="title">Login</h3>
-    <div class="box">
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <div class="notification">
-                {{ messages[0] }}
-            </div>
-        {% endif %}
-        {% endwith %}
         <form method="POST" action="{{ url_for('auth.login') }}">
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="username" name="username" placeholder="Username" autofocus="">
-                </div>
-            </div>
+            <div class="form-group">
+                <label for="inputUsername">Username</label>
+                <input type="username" class="form-control" id="inputUsername" placeholder="Enter Username" autofocus="">
+              </div>
 
-            <div class="field">
-                <div class="control">
-                    <input class="input is-large" type="password" name="password" placeholder="Password">
-                </div>
-            </div>
+              <div class="form-group">
+                <label for="inputPassword">Password</label>
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+              </div>
 
-            <!--
-            <div class="field">
-                <label class="checkbox">
-                    <input type="checkbox" name="remember">
-                    Remember me
-                </label>
-            </div>
-            -->
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="inputCheckBox">
+                <label class="form-check-label">Remember</label>
+              </div>
 
-            <button type="button" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-primary">Login</button>
         </form>
     </div>
 </div>

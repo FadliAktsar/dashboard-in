@@ -15,7 +15,6 @@ from io import StringIO
 model = joblib.load('app/notebooks/arima_model1.joblib')
 
 @bp.route('/')
-#@login_required
 def index():
     return render_template('dashboard/index.html')
 
@@ -66,15 +65,12 @@ def get_data():
                                         index=pd.to_datetime(labels))
         prediction = model.predict(start=len(transaction_series),
                                            end=len(transaction_series) + input_periods - 1)
-        #prediction_mean = prediction.predicted_mean
 
         #Save Forecast to Database
         for i, date in enumerate(forecast_range):
             existing_entry = db.session.query(Peramalan).filter_by(Settelement_Date=date).first()
             if not existing_entry:
-                predict = Peramalan(Settelement_Date=date,
-                                     Forecast = prediction_mean[i],
-                                       Revenue=0)
+                predict = Peramalan(Settelement_Date=date, Forecast = prediction[i],Revenue=0)
                 db.session.add(predict)
         db.session.commit()
 
@@ -106,7 +102,7 @@ def download_csv():
         cw.writerow(['Settlement_Date', 'Forecast'])
         for pred in forecasts:
             cw.writerow([pred.Settelement_Date, pred.Forecast])
-
+        
         # Return the CSV file as a response
         response = make_response(si.getvalue())
         response.headers['Content-Disposition'] = 'attachment; filename=predictions.csv'

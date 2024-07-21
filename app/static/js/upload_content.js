@@ -1,6 +1,8 @@
 $(document).ready(function() {
     function updateContent(searchQuery, page) {
-        $.get('/upload', { search: searchQuery, page: page }, function(data) {
+        $.get('/upload',
+             { search: searchQuery, page: page },
+              function(data) {
             $('#transaction-table').html(data.table);
             $('#pagination').html(data.pagination);
         });
