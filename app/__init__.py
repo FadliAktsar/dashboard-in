@@ -18,7 +18,7 @@ def create_app(config_class=Config):
     
     from app.dashboard import bp as dashboard_bp
     app.register_blueprint(dashboard_bp, url_prefix='/dashboard')
-
+    
         
     @app.route('/test/')
     def test_page():
@@ -27,4 +27,4 @@ def create_app(config_class=Config):
 
 if __name__ == '__main__':
     app = create_app
-    app.run()
+    app.run(debug=True)
