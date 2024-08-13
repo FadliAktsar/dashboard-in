@@ -4,27 +4,47 @@
 {% block content %}
 
 <!-- Notification -->
+<!--
 <div id="notification">
     {% include 'notification.html' %}
 </div>
+-->
 
-<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <div class="selection-bar mb-3 d-flex">
-        <select id="forecast-period" class="form-select" name="periods" aria-label="Default select example">
-            <option value="30" selected>Select Forecast Periods</option>
-            <option value="30">30 Hari</option>
-            <option value="14">14 Hari</option>
-            <option value="7">7 Hari</option>
-          </select>
+<div class="dashboard-container">
+    <!-- Chart Transaksi -->
+    <div class="card card-style">
+        <div class="card-body">
+            <div class="chart-container">
+                <canvas id="transaction"></canvas>
+            </div>
+        </div>
     </div>
+    
+    <!-- Chart Peramalan -->
+    <div class="card card-style">
+        <div class="card-body">
+            <div class="chart-container">
+                <canvas id="forecast"></canvas>
+            </div>
+        </div>
+    </div> 
+</div>
 
-    <div class="mb-3 d-flex">
-        <button id="download" class="btn btn-outline-secondary" type="button">Download</button>
-     </div>
-   </div>
-   
-<div class="chart-container" style="position: relative; height:40vh; width:80vw">
-    <canvas id="predict"></canvas>
+ <!-- Sidebar Button -->
+<div class="button-container">
+    <div class="forecast-form">
+        <div class="selection-bar">
+            <select id="forecast-period" class="form-select" name="periods" aria-label="Default select example">
+                <option value="30" selected>Select Forecast Periods</option>
+                <option value="30">30 Hari</option>
+                <option value="14">14 Hari</option>
+                <option value="7">7 Hari</option>
+              </select>
+        </div>
+        <div class="button-download">
+            <button id="download" class="btn btn-outline-secondary" type="button">Download</button>
+         </div>
+    </div>
 </div>
 {% endblock %}
 
