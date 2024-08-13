@@ -9,12 +9,13 @@
 
 <div class="d-flex justify-content-between">
   
-  <!-- Search bar for show search specific data -->
-   <div class="d-grid gap-2 d-md-flex mb-3">
-        <form class="d-flex">
-            <input type="search" id="search-input" aria-label="Search" name="search"  value="{{ search_query }}" class="form-control me-2" placeholder="Search Transaction">
-        </form>
-      </div>
+  <!--
+    <div class="d-grid gap-2 d-md-flex mb-3">
+         <form class="d-flex">
+             <input type="search" id="search-input" aria-label="Search" name="search"  value="{{ search_query }}" class="form-control me-2" placeholder="Search Transaction">
+         </form>
+       </div>
+  -->
 
     <!-- Upload form for import data to database -->
     <div class="d-grid gap-2 d-md-flex mb-3">
@@ -30,10 +31,11 @@
       {% include 'upload/_transaction_table.html' %}
  </div>
 
-<!-- Navigation section for pagination controls -->
- <div id="pagination">
-      {% include 'upload/_pagination.html' %}
- </div>
+<!-- 
+<div id="pagination">
+     {% include 'upload/_pagination.html' %}
+</div>
+-->
 
 {%endblock%}
 
@@ -42,5 +44,8 @@
   window.endpointUrl = "{{ url_for('upload.index') }}";
 </script>
 <script type = "text/javascript"  src="{{ url_for('static', filename = 'js/upload.js') }}"></script>
-<script type = "text/javascript"  src="{{ url_for('static', filename = 'js/upload_content.js') }}"></script>
+<script type = "text/javascript"  src="{{ url_for('static', filename = 'js/tables.js') }}"></script>
+<!--
+  <script type = "text/javascript"  src="{{ url_for('static', filename = 'js/upload_content.js') }}"></script>
+-->
 {%endblock%}
