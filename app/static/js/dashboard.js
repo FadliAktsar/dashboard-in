@@ -1,20 +1,22 @@
-const clx = document.getElementById('predict').getContext('2d')
+const transaction_canvas = document.getElementById('transaction').getContext('2d');
+const forecast_canvas = document.getElementById('forecast').getContext('2d');
+
 const forecastPeriodSelect = document.getElementById('forecast-period');
 const download = document.getElementById('download');
 
-let chart = null;
-
+//let forecast = null;
+/*
 forecastPeriodSelect.addEventListener('change', function() {
     const selectedPeriod = this.value;
     fetchForecastData(selectedPeriod);
 });
-
+*/
 function fetchForecastData(periods) {
     
     $.ajax({
             url: "/dashboard/get_data",
             type: "get",
-            data: { periods: periods },
+            //data: { periods: periods },
             success: function(response) {
                 console.log("Response Data:", response);
                 _data = response.data;
@@ -22,28 +24,61 @@ function fetchForecastData(periods) {
                 _forecast_data = response.forecast_data;
                 _forecast_labels = response.forecast_labels;
                 
-                if (chart) {
-                    chart.destroy();
-                    chart = null; 
-                }
+                /*
+                if (forecast) {
+                    forecast.destroy();
+                     forecast = null;
+                    }
+                */
 
-                chart = new Chart(clx, {
+                let transaction = new Chart(transaction_canvas, {
                     type: 'line',
                     data: {
-                        labels: _labels.concat(_forecast_labels),
+                        labels: _labels,
                         datasets: [{
                             label: 'Revenue',
                             data: _data,
                             backgroundColor: 'black',
                             borderColor: 'blue',
                             borderWidth: 1
-                        },{
-                            labels:_forecast_labels,
-                            label: 'Forecast',
-                            data: Array(_data.length).fill(null).concat(_forecast_data),
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        legend: {display: false},
+                        scales: {
+                            y: {  // Use 'y' for y-axis in Chart.js v3 and above
+                                min: 0,
+                                beginAtZero: true
+                            },
+                            x:{
+                                ticks:{
+                                    maxTicksLimit: 10
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Data Revenue'
+                            },
+                            tooltip:{
+                                enabled: true
+                            }
+                        }
+                    },
+                });
+                
+                let forecast = new Chart(forecast_canvas, {
+                    type: 'line',
+                    data: {
+                        labels: _forecast_labels,
+                        datasets: [{
+                            label: 'Peralaman',
+                            data: _forecast_data,
                             backgroundColor: 'orange',
-                            borderColor: 'white',
-                            borderWidth: 1 
+                            borderColor: 'black',
+                            borderWidth: 1
                         }]
                     },
                     options: {
@@ -52,9 +87,20 @@ function fetchForecastData(periods) {
                         scales: {
                             y: {  // Use 'y' for y-axis in Chart.js v3 and above
                                 beginAtZero: true
+                            },
+                            x:{
+                                ticks:{
+                                    maxTicksLimit: 15
+                                }
+                            }
+                        },
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Data Peramalan'
                             }
                         }
-                    }
+                    },
                 });
             }
     });
