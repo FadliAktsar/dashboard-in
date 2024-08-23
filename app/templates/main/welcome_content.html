@@ -1,18 +1,18 @@
-{% extends 'base.html' %}
+{% extends 'main/index.html' %}
 {% from 'main/macros.html' import card %}
-
-{% block title %} Home {% endblock %}
 
 {%block content%}
 {{ card(
-    title='Home',
+    title='Welcome Content',
     links=[
         {'text': 'Selamat Datang', 'url': url_for('main.welcome_content'), 'active': True},
         {'text': 'Informasi Peramalan', 'url': url_for('main.forecast_content'), 'active': False}
     ],
     contents= '''
-    <h5 class="card-title"><b>Halo!</b></h5>
+    <h5 class="card-title"><b>Halo admin!</b></h5><br>
     <p class="card-text">Selamat datang di website peramalan data transaksi kedai Kopi-in.</p>
     '''
+    
 ) }}
 {%endblock%}
+    

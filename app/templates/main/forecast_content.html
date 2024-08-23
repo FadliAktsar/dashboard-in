@@ -1,0 +1,25 @@
+{% extends 'main/index.html'%}
+{% from 'main/macros.html' import card %}
+
+{%block content%}
+{{ card(
+  title='Forecast Content',
+  links=[
+      {'text': 'Selamat Datang', 'url': url_for('main.welcome_content'), 'active': False},
+      {'text': 'Informasi Peramalan', 'url': url_for('main.forecast_content'), 'active': True}
+  ],
+  contents='''
+  <h5 class="card-title "><b>Implementasi Model Autoregressive Integrated Moving Average (ARIMA)</b></h5><br>
+  <h6 class="card-text ">Tahapan Peramalan Data Menggunakan ARIMA:</h6><br>
+  <p class="card-text">1. Data Check dan Preprocessing: Tahapan ini memerika data time series untuk melihat apakah data sudah stasioner atau belum. Jika data belum stasioner, langkah selanjutnya yaitu melakukan tahapan differencing pada saat dilakukannya preprocessing menggunakan transformasi logaritma. Setelah data stasioner maka data dapat diolah menggunakan model ARIMA.</p><br>
+  <p class="card-text">2. Split Data Train dan Test: Setelah melalui tahap Data Processing, selanjutnya membagi data train (latih) dan data test (uji). Data train akan digunakan untuk melatih model ARIMA, data test digunakan untuk mengevaluasi model yang telah dilatih.</p><br>
+  <p class="card-text">3. Identifikasi ordo (p,d,q) menggunakan auto_arima: Auto arima merupakan library algoritma yang digunakan untuk mencari model ARIMA yang paling sesuai untuk data time series secara otomatis. Algoritma ini akan mencoba berbagai kombinasi nilai p,d, dan q untuk ARIMA dan mencari model dengan nilai Akaike Information Critetiron terkecil. auto_arima tersedia dalam berbagai pustaka analisis time series seperti pmdarima atau statsmodels di Python.</p><br>
+  <p class="card-text">4. Fitting Model: Selanjutnya melatih model tersebut dengan menggunakan data training. Fitting model dilakukan dengan memasukan data training ke dalam fungsi fit dari model ARIMA</p><br>
+  <p class="card-text">5. Peramalan: Selanjutnya menggunakan model latih untuk melakukan peramalan pada data testing.Peramalan ini dilakukan dengan memanggil fungsi predict dari model ARIMA dan memberikan nilai periode untuk menentukan jumlah waktu yang akan di ramal.</p><br>
+  <p class="card-text">6. Evaluasi Model: Tahap selanjutnya yaitu mengevaluasi kinerja model ARIMA. Evaluasi dilakukan dengan membandingkan hasil peramalan dengan data asli pada data latih menggunakan metrik evaluasi Mean Absolute Error(MAE) dan  Mean Absolute Percentage Error (MAPE).</p><br>
+  '''
+      
+  ) }}
+{%endblock%}
+  
+  

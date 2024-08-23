@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, current_app
 
 from app.extension import db
 from app.upload import bp
@@ -7,6 +7,10 @@ from sqlalchemy import or_,func, cast, String
 
 from io import StringIO
 import pandas as pd
+from datetime import datetime
+import logging
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 ALLOWED_EXTENSIONS = {'csv'}
 
@@ -15,46 +19,70 @@ def allowed_file(filename):
 
 @bp.route('/')
 def index():
-    
-    try:
-        #get transaction data from db and make it pagination
-        search_query = request.args.get('search', '', type=str)
-        page = request.args.get('page', 1, type=int)
+    return render_template('upload/index.html')
 
-        query = db.session.query(Transaksi).order_by(Transaksi.Settlement_Date.desc())
-
-        if search_query:
-            search_filter = or_(
-                Transaksi.Transaction_Id.ilike(f'%{search_query}%'),
-                cast(Transaksi.Amount, String).ilike(f'%{search_query}%'),
+@bp.route('/api', methods=['GET'])
+def data():
+     
+     query = Transaksi.query
+     
+     #Search Filter
+     search = request.args.get('search[value]')
+     if search:
+          query = query.filter(db.or_(
+                Transaksi.Transaction_Id.ilike(f'%{search}%'),
+                cast(Transaksi.Amount, String).ilike(f'%{search}%'),
                 func.to_char(
                     Transaksi.Settlement_Date, 'YYYY-MM-DD'
-                    ).ilike(f'%{search_query}%'),
+                    ).ilike(f'%{search}%'),
                 func.to_char(
                  Transaksi.Payment_Date, 'YYYY-MM-DD'  
-                ).ilike(f'%{search_query}%'),
-                Transaksi.Payment_Type.ilike(f'%{search_query}%')
-            )
-            query = query.filter(search_filter)
-        
-        paginate = db.paginate(query, page=page, per_page=10, error_out=False)
-        
-    except Exception as e:
-        error_text = "The error:" + str(e)
-        hed = 'Something is broken.'
-        return hed + "/" + error_text
-    
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return jsonify({
-            "table": render_template('upload/_transaction_table.html', transaksi=paginate.items),
-            "pagination": render_template('upload/_pagination.html', pagination=paginate, search_query=search_query)
-        })
+                ).ilike(f'%{search}%'),
+                Transaksi.Payment_Type.ilike(f'%{search}%')
+               ))
+          total_filtered = query.count()
 
-    return render_template('upload/index.html', 
-                           transaksi=paginate,
-                           items=paginate.items,
-                           pagination=paginate,
-                           search_query=search_query)
+     # Sorting
+     order = []
+     i = 0
+     while True:
+               col_index = request.args.get(f'order[{i}][column]')
+               if col_index is None:
+                    break
+               col_name = request.args.get(f'columns[{col_index}][data]')
+               if col_name not in ['Settlement_Date', 'Payment_Type']:
+                    col_name = 'Settlement_Date'
+               descending = request.args.get(f'order[{i}][dir]') == 'desc'
+               col = getattr(Transaksi, col_name)
+               if descending:
+                    col = col.desc()
+               order.append(col)
+               i += 1
+     if order:
+         query = query.order_by(*order)
+
+     # Paggination
+     start = request.args.get('start', type=int)
+     length = request.args.get('length', type=int)
+     total_filtered = query.count()
+     query = query.offset(start).limit(length)
+    
+     def clean_data(transaksi_dict):
+        for key, value in transaksi_dict.items():
+            if value != value:  # Memeriksa jika nilai adalah NaN
+                transaksi_dict[key] = None
+            elif isinstance(value, float) and abs(value) > 1e10:  # Memeriksa angka dengan notasi E
+                transaksi_dict[key] = '{:.0f}'.format(value)
+        return transaksi_dict
+     
+     response = {
+         'data': [clean_data(transaksi.to_dict()) for transaksi in query.all()],
+         'recordsFiltered': total_filtered,
+         'recordsTotal': Transaksi.query.count(),
+         'draw': request.args.get('draw', type=int)
+         }
+          
+     return jsonify(response)
 
 @bp.route('/upload_files', methods=['POST'])
 def upload_files():
@@ -86,14 +114,31 @@ def upload_files():
                              "success": False})
         
         # Use transaction to ensure atomicity
-        with db.session.begin():
+        with db.session.no_autoflush:
             for _, row in csv_input.iterrows():
 
                 existing_transaction = Transaksi.query.filter_by(Transaction_Id=row['Transaction ID']).first()
 
                 if existing_transaction:
+                     current_app.logger.info("Transaction already exists with ID: %s", row['Transaction ID'])
                      return jsonify({"message": "Data already exist", "success": False})
                 
+                def parese_date(date_str):
+                    
+                    if len(date_str) == 8:
+                        try:
+                            return datetime.strptime(date_str, '%Y%m%d').date()
+                        except ValueError:
+                            return datetime.strptime(date_str, '%d%m%Y').date()
+                    
+                    if len(date_str) == 10:
+                        try:
+                            return datetime.strptime(date_str, '%Y/%m/%d').date()
+                        except ValueError:
+                            return datetime.strptime(date_str, '%d/%m/%Y').date()
+                        
+                    raise ValueError(f"Date format for {date_str} is not supported")
+
                 new_transaction = Transaksi(
                     Outlet_Name=row['Outlet name'],
                     Merchant_Id=row['Merchant ID'],
@@ -105,7 +150,7 @@ def upload_files():
                     Transaction_Status=row['Transaction Status'],
                     Transaction_Time=row['Transaction time'],
                     Payment_Type=row['Payment Type'],
-                    Payment_Date=row['Payment Date'],
+                    Payment_Date= parese_date(row['Payment Date']),
                     GoPay_Transaction_Id=row['GO-PAY Transactions ID'],
                     GoPay_Reference_Id=row['Gopay Reference Id'],
                     GoPay_Customer_Id=row['GoPay Customer ID'],
@@ -115,15 +160,16 @@ def upload_files():
                     Qris_Acquirer=row['QRIS Acquirer'],
                     Card_Type=row['Card Type'],
                     Credit_Card_Number=row['Credit Card Number'],
-                    Settlement_Date=row['Settlement Date'],
+                    Settlement_Date=parese_date(row['Settlement Date']),
                     Settlement_Time=row['Settlement time']
                 )
 
                 db.session.add(new_transaction)
 
-            db.session.commit()  # Komit setelah loop selesai
+            db.session.commit()  # Commit Data After Looping Process
         return jsonify({"message": "File successfully uploaded and data saved to database", "success": True})
     
     except Exception as e:
         db.session.rollback()
+        logging.error("Error processing file: %s", e, exc_info=True)
         return jsonify({"message": f"Error processing file: {e}", "success": False})

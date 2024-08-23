@@ -3,8 +3,3 @@ from flask_sqlalchemy import SQLAlchemy
 
 #database
 db = SQLAlchemy()
-'''
-#login
-login_manager = LoginManager()
-login_manager.login_view = 'auth.login'
-'''

@@ -22,6 +22,7 @@ h1 {
 
 body {
     font-family: 'Poppins', sans-serif;
+    background-color: #f0f2f5;
 }
 
 body .wrapper{
@@ -34,6 +35,7 @@ body .wrapper{
     overflow: hidden;
     transition: all 0.35s ease-in-out;
     background-color: #fafbfe;
+    padding: 20px;
 }
 
 /* start of sidebar design */
@@ -73,7 +75,6 @@ body .wrapper{
     color: #fff;
     font-size: 1.15rem;
     font-weight: 600;
-    margin: auto 0;
 }
 
 #sidebar:not(.expand) .sidebar-logo,
@@ -93,6 +94,7 @@ a.sidebar-link{
     font-size: 0.9rem;
     white-space: nowrap;
     border-left: 3px solid transparent;
+    transition: background-color 0.3s ease, border-left 0.3s ease;
 }
 
 .sidebar-link i{
@@ -121,12 +123,77 @@ a.sidebar-link{
 
 /* end of sidebar design */
 
-/* canvas */
+/* dashboard page */
 
-/* end of canvas */
+/* chart */
 
+.dashboard-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 20px;
+    gap: 20px;
+}
+
+.card-style {
+    flex: 2;
+    margin: 10px;
+    min-width: 300px; /* Minimum width for each card */
+    max-width: 850px; /* Maximum width for each card */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.chart-container {
+    position: relative; /* Set container to relative to use absolute positioning inside */
+    height: 400px; /* Adjust the height based on your needs */
+    width: 100%;
+    margin-top: 20px; /* Add margin to create space from above elements */
+}
+
+canvas {
+    max-width: 100%; /* Ensure canvas does not exceed card width */
+    height: 100%; /* Ensure canvas fits within the container */
+}
+/* end of chart */
+
+/* button */
+
+.overlay-content .forecast-form{
+    display: flex;
+    flex-direction: row;
+}
+
+.overlay-content .forecast-form select, 
+.overlay-content .forecast-form button {
+    margin: 0 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.overlay-content .forecast-form button:hover {
+    background-color: #3b7ddd;
+    color: #fff;
+}
+
+/* end of button */
+
+/* end of dashboard page */
 
 /* start of table design */
+.form-label {
+    margin-bottom: 0;
+}
 
+.d-flex {
+    align-items: center;
+}
 
 /* end of table design */

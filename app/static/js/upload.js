@@ -16,8 +16,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 notification.innerHTML = `<div class="alert alert-${data.success ? 'success' : 'danger'}" role="alert">${data.message}</div>`;
                 if (data.success) {
                     setTimeout(() => {
-                        location.reload();
+                        $('#data').DataTable().ajax.reload();
+                        notification.innerHTML = '';
                     }, 2000); // Refresh halaman setelah 2 detik
+                } else {
+                    setTimeout(() => {
+                        notification.innerHTML = '';
+                    }, 2000)
                 }
             } else {
                 console.error('Notification element not found');

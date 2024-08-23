@@ -1,0 +1,24 @@
+{% macro card_head(title, links) %}
+<div class="card-header">
+  <ul class="nav nav-tabs card-header-tabs">
+    {% for link in links %}
+    <li class="nav-item">
+      <a class="nav-link {% if link.active %}active{% endif %}" href="{{ link.url }}" data-url="{{ link.url }}">{{ link.text }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endmacro %}
+
+{%macro card_body(contents)%}
+<div class="card-body text-start">
+  {{ contents | safe }}
+</div>
+{% endmacro %}
+
+{%macro card(title, links, contents)%}
+<div class="card">
+   {{card_head(title,links)}}
+   {{card_body(contents)}}
+</div>
+{% endmacro %}

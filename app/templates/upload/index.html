@@ -9,14 +9,6 @@
 
 <div class="d-flex justify-content-between">
   
-  <!--
-    <div class="d-grid gap-2 d-md-flex mb-3">
-         <form class="d-flex">
-             <input type="search" id="search-input" aria-label="Search" name="search"  value="{{ search_query }}" class="form-control me-2" placeholder="Search Transaction">
-         </form>
-       </div>
-  -->
-
     <!-- Upload form for import data to database -->
     <div class="d-grid gap-2 d-md-flex mb-3">
      <form id="uploadForm" class="d-flex flex-row" method="POST" action="/upload/upload_files" enctype="multipart/form-data">
@@ -26,16 +18,43 @@
     </div>
 </div>
 
-<!-- Table section for show transaction data -->
- <div id="transaction-table">
-      {% include 'upload/_transaction_table.html' %}
- </div>
+<!-- Table -->
 
-<!-- 
-<div id="pagination">
-     {% include 'upload/_pagination.html' %}
-</div>
--->
+<div class="container mt-5">
+  <div class="row mb-3 align-items-center">
+      <!-- Custom Entries Selection -->
+      <div class="col-md-6 d-flex align-items-center">
+          <label for="entries" class="me-2">Show entries:</label>
+          <select id="entries" class="form-select w-auto">
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+          </select>
+      </div>
+
+      <!-- Custom Search -->
+      <div class="col-md-6">
+          <div class="input-group">
+              <span class="input-group-text">Search:</span>
+              <input id="search" type="text" class="form-control" placeholder="Search...">
+          </div>
+      </div>
+  </div>
+
+<table id="data" class="table table-bordered display nowrap dataframe"  style="width:100%">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Transaction ID</th>
+            <th>Amount</th>
+            <th>Payment Type</th>
+        </tr>
+    </thead>
+    <tbody>
+      <!-- Data diisi oleh sistem -->
+  </tbody>
+</table> 
 
 {%endblock%}
 
@@ -45,7 +64,5 @@
 </script>
 <script type = "text/javascript"  src="{{ url_for('static', filename = 'js/upload.js') }}"></script>
 <script type = "text/javascript"  src="{{ url_for('static', filename = 'js/tables.js') }}"></script>
-<!--
-  <script type = "text/javascript"  src="{{ url_for('static', filename = 'js/upload_content.js') }}"></script>
--->
+
 {%endblock%}

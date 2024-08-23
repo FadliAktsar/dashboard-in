@@ -3,35 +3,38 @@ const forecast_canvas = document.getElementById('forecast').getContext('2d');
 
 const forecastPeriodSelect = document.getElementById('forecast-period');
 const download = document.getElementById('download');
+const dataModeSelect = document.getElementById('data-mode');  // Dropdown baru untuk memilih daily/weekl
 
-//let forecast = null;
-/*
-forecastPeriodSelect.addEventListener('change', function() {
-    const selectedPeriod = this.value;
-    fetchForecastData(selectedPeriod);
-});
-*/
-function fetchForecastData(periods) {
+let transaction = null;
+let forecast = null;
+
+
+
+function fetchForecastData(periods, mode = 'weekly') {
     
     $.ajax({
             url: "/dashboard/get_data",
-            type: "get",
-            //data: { periods: periods },
+            type: "GET",
+            data: { 
+                periods: periods,
+                mode: mode },
             success: function(response) {
                 console.log("Response Data:", response);
                 _data = response.data;
                 _labels = response.labels;
                 _forecast_data = response.forecast_data;
                 _forecast_labels = response.forecast_labels;
-                
-                /*
+
+                // Clear the previous chart if it exists
+                if (transaction) {
+                    transaction.destroy();
+                }
+
                 if (forecast) {
                     forecast.destroy();
-                     forecast = null;
                     }
-                */
 
-                let transaction = new Chart(transaction_canvas, {
+                transaction = new Chart(transaction_canvas, {
                     type: 'line',
                     data: {
                         labels: _labels,
@@ -60,7 +63,7 @@ function fetchForecastData(periods) {
                         plugins: {
                             title: {
                                 display: true,
-                                text: 'Data Revenue'
+                                text: mode == 'daily' ? 'Data Revenue per Hari' : 'Data Revenue per Minggu'
                             },
                             tooltip:{
                                 enabled: true
@@ -69,12 +72,12 @@ function fetchForecastData(periods) {
                     },
                 });
                 
-                let forecast = new Chart(forecast_canvas, {
+                forecast = new Chart(forecast_canvas, {
                     type: 'line',
                     data: {
                         labels: _forecast_labels,
                         datasets: [{
-                            label: 'Peralaman',
+                            label: 'Peramalan',
                             data: _forecast_data,
                             backgroundColor: 'orange',
                             borderColor: 'black',
@@ -106,7 +109,24 @@ function fetchForecastData(periods) {
     });
 }
 
-fetchForecastData(30)
+fetchForecastData(4, 'weekly')
+
+function updateChart() {
+    const mode = dataModeSelect.value;          // Ambil nilai mode (daily/weekly) dari dropdown
+    const periods = forecastPeriodSelect.value; // Ambil nilai periode dari dropdown
+    fetchForecastData(periods, mode);           // Panggil fetchForecastData dengan kedua parameter
+}
+
+// Event listener untuk dropdown mode
+dataModeSelect.addEventListener('change', function() {
+    console.log("Mode changed to:", dataModeSelect.value);
+    updateChart();   
+});
+
+forecastPeriodSelect.addEventListener('change', function() {
+    console.log("Period changed to:", forecastPeriodSelect.value);
+    updateChart();   
+});
 
 download.addEventListener('click', function() {
     window.location.href = "/dashboard/download_csv";
