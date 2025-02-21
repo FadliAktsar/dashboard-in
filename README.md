@@ -17,3 +17,4 @@ Dashboard-in adalah single page application berbasis website berupa dashboard un
 - flask
 - pandas
 - statsmodels.arima
+- pickle
