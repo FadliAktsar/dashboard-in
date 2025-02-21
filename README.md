@@ -17,3 +17,5 @@ Project akhir kampus alias skripsi. Dashboard-in adalah website dashboard untuk 
 - flask
 - pandas
 - statsmodels.arima
+
+Link Github Project: https://github.com/FadliAktsar/dashboard-in 
