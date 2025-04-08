@@ -17,9 +17,3 @@ Dashboard-in adalah single page application berbasis website berupa dashboard un
 - flask
 - pandas
 - statsmodels.arima
-<<<<<<< HEAD
-
-Link Github Project: https://github.com/FadliAktsar/dashboard-in 
-=======
-- pickle
->>>>>>> e1bf290cbadb6739dc90743d721f33407fc37bb2
